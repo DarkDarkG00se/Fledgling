@@ -3,9 +3,12 @@ export default class imageboxes extends Component {
   render() {
     return (
       <div className="col-md-3 portfolio-item">
-        <a href="/">
-          <img className="img-responsive" src="http://placehold.it/750x450" alt="" />
+        <a href={this.props.link}>
+          <img className="img-responsive" src={this.props.picture} alt="" />
         </a>
+        <p>
+          {' '}{this.props.text}{' '}
+        </p>
       </div>
     );
   }
