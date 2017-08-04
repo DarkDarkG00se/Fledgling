@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './App.css';
 import Navbar from './components/nav-bar/Nav-bar';
 import Boxes from './components/image-boxes/Image-Boxes';
@@ -16,6 +17,7 @@ class App extends Component {
 
   componentWillMount() {
     this._listenToCreateEvent();
+    this._listenToDeleteEvent();
   }
   render() {
     return (
@@ -67,9 +69,24 @@ class App extends Component {
     });
   };
 
+  _listenToDeleteEvent = () => {
+    const ImageItems = database.ref('ImageItems');
+    ImageItems.on('child_removed', data => {
+      const state = this.state.ImageItems;
+
+      const NewState = state.filter(item => item.key !== data.key);
+
+      this.setState({
+        ImageItems: NewState
+      });
+    });
+  };
+
   _renderImageBoxes = () => {
     console.log('state', this.state);
-    return this.state.ImageItems.map(item => <Boxes link={item.href} picture={item.imgSrc} text={item.text} />);
+    return this.state.ImageItems.map(item =>
+      <Boxes link={item.href} picture={item.imgSrc} text={item.text} key={item.key} itemID={item.key} />
+    );
   };
 }
 
