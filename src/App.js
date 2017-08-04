@@ -1,13 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import './App.css';
 import Navbar from './components/nav-bar/Nav-bar';
 import Boxes from './components/image-boxes/Image-Boxes';
 import Header from './components/header/Header';
 import Input from './components/input/Input';
 import fire from './fire';
-
+import { Route, Switch } from 'react-router-dom';
+import Contact from './components/pages/Contact';
+import Skills from './components/pages/Skills';
 const database = fire.database();
 
 class App extends Component {
@@ -20,25 +21,35 @@ class App extends Component {
     this._listenToDeleteEvent();
   }
   render() {
+    const home = () => {
+      return (
+        <div>
+          <div className="row">
+            <div className="col-lg-12">
+              <Header headerText={'Home'} />
+            </div>
+          </div>
+          <div>
+            <div className="row">
+              {this._renderImageBoxes()}
+            </div>
+            <hr />
+            <div className="row">
+              <Input />
+            </div>
+          </div>
+        </div>
+      );
+    };
     return (
       <div>
         <Navbar />
         <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <Header headerText={'First Heading'} />
-            </div>
-          </div>
-
-          <div className="row">
-            {this._renderImageBoxes()}
-          </div>
-
-          <hr />
-          <div className="row">
-            <Input />
-          </div>
-
+          <Switch>
+            <Route exact path="/" component={home} />
+            <Route exact path="/contact" component={Contact} />
+            <Route exact path="/skills" component={Skills} />
+          </Switch>
           <hr />
           <footer>
             <div className="row">
